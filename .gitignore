@@ -1,0 +1,32 @@
+# General .gitignore for ESP-IDF projects
+
+# Build output
+build/
+
+# ESP-IDF symlink (points to a local path on your machine)
+esp-idf
+
+# Generated / local config
+sdkconfig
+sdkconfig.old
+
+# Managed components (downloaded by the IDF component manager)
+managed_components/
+dependencies.lock
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# Python / tooling
+__pycache__/
+*.pyc
+.cache/
+.clangd/
+compile_commands.json
+
+# OS junk
+.DS_Store
+Thumbs.db
