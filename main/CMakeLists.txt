@@ -1,3 +1,3 @@
 idf_component_register(SRCS "main.c"
                         INCLUDE_DIRS "."
-                        REQUIRES debug freertos)
+                        REQUIRES baro_hal debug freertos)
