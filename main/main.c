@@ -11,33 +11,29 @@
 #include "freertos/task.h"
 #include "esp_log.h"
 #include "uart_manager.h"
+#include "debug.h"
 
 static const char *TAG = "usb_serial_test";
 
-static void on_rx(const uint8_t *data, size_t len, void *ctx)
-{
-    uart_manager_handle_t mgr = ctx;
-    uart_manager_send(mgr, data, len);      /* echo */
-}
-
 void app_main(void)
 {
-    uart_manager_config_t cfg = UART_MANAGER_CONFIG_DEFAULT(UART_NUM_0);
-    cfg.hal.baud_rate = 115200;
-    cfg.rx_cb = on_rx;
+	uart_manager_config_t cfg = UART_MANAGER_CONFIG_DEFAULT(UART_NUM_0);
+	cfg.hal.baud_rate = 115200;
+	cfg.rx_cb = NULL;
 
-    uart_manager_handle_t uart = NULL;
-    ESP_ERROR_CHECK(uart_manager_create(&cfg, &uart));
-    uart_manager_set_rx_callback(uart, on_rx, uart);   /* ctx = handle, known only now */
-    ESP_ERROR_CHECK(uart_manager_start(uart));
+	uart_manager_handle_t uart = NULL;
+	ESP_ERROR_CHECK(uart_manager_create(&cfg, &uart));
+	uart_manager_set_rx_callback(uart, NULL, uart);
+	ESP_ERROR_CHECK(uart_manager_start(uart));
 
-    ESP_LOGI(TAG, "Starting USB (UART0) write test");
+	ESP_LOGI(TAG, "Starting USB (UART0) write test");
 
-    int counter = 0;
-    while (1) {
-        uart_manager_printf(uart, "Hello from ESP32! count=%d\r\n", counter);
-        ESP_LOGI(TAG, "Sent: count=%d", counter);
-        counter++;
-        vTaskDelay(pdMS_TO_TICKS(1000));
-    }
+	debug_init(uart);
+
+	int counter = 0;
+	while (1) {
+		debug_printf("Hello from ESP32, count %d\n", counter);
+		counter++;
+		vTaskDelay(pdMS_TO_TICKS(1000));
+	}
 }
