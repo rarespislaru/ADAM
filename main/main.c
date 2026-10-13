@@ -32,7 +32,7 @@ void app_main(void)
 
 	int counter = 0;
 	while (1) {
-		debug_printf("Hello from ESP32, count %d\n", counter);
+		debug_printf("Hello from EVA, count %d\n", counter);
 		counter++;
 		vTaskDelay(pdMS_TO_TICKS(1000));
 	}

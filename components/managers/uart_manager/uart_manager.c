@@ -140,40 +140,6 @@ esp_err_t uart_manager_send(uart_manager_handle_t m, const void *data, size_t le
     return (n == (int)len) ? ESP_OK : ESP_FAIL;
 }
 
-int uart_manager_printf(uart_manager_handle_t m, const char *fmt, ...)
-{
-    if (!m || !fmt) return -1;
-
-    char stack_buf[PRINTF_STACK_BUF];
-    char *buf = stack_buf;
-
-    va_list ap, ap2;
-    va_start(ap, fmt);
-    va_copy(ap2, ap);
-    int len = vsnprintf(stack_buf, sizeof(stack_buf), fmt, ap);
-    va_end(ap);
-
-    if (len < 0) {
-        va_end(ap2);
-        return -1;
-    }
-
-    if ((size_t)len >= sizeof(stack_buf)) {          /* didn't fit: use heap */
-        buf = malloc((size_t)len + 1);
-        if (!buf) {
-            va_end(ap2);
-            return -1;
-        }
-        vsnprintf(buf, (size_t)len + 1, fmt, ap2);
-    }
-    va_end(ap2);
-
-    esp_err_t err = uart_manager_send(m, buf, (size_t)len);
-    if (buf != stack_buf) free(buf);
-
-    return (err == ESP_OK) ? len : -1;
-}
-
 serial_hal_handle_t uart_manager_hal(uart_manager_handle_t m)
 {
     return m ? m->hal : NULL;

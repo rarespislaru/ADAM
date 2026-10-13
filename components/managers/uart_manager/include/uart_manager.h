@@ -65,10 +65,6 @@ esp_err_t uart_manager_set_rx_callback(uart_manager_handle_t mgr,
 /** Thread-safe write. ESP_OK only if all bytes were accepted. */
 esp_err_t uart_manager_send(uart_manager_handle_t mgr, const void *data, size_t len);
 
-/** Thread-safe printf-style write. Returns bytes written or negative on error. */
-int uart_manager_printf(uart_manager_handle_t mgr, const char *fmt, ...)
-    __attribute__((format(printf, 2, 3)));
-
 /** Direct access to the underlying HAL (e.g. to change the baud rate). */
 serial_hal_handle_t uart_manager_hal(uart_manager_handle_t mgr);
 
