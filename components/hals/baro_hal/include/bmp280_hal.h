@@ -57,8 +57,8 @@ typedef enum {
 
 // BMP280 main struct
 typedef struct {
-	i2c_master_bus_handle_t bus;        /* created by the app, shared with other sensors */
-	uint8_t          address;           /* 0x76 (SDO low) or 0x77 (SDO high) */
+	i2c_master_bus_handle_t bus;        // created by the app, shared with other sensors
+	uint8_t          address;           // 0x76 (SDO low) or 0x77 (SDO high)
 	uint32_t         scl_speed_hz;
 	bmp280_mode_t    mode;
 	bmp280_osrs_t    osrs_temp;
